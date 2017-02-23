@@ -275,6 +275,130 @@
             
               
                 
+                <a class="post-title-link" href="/2017/02/23/从NSCopying协议到copy，mutableCopy/" itemprop="url">
+                  从NSCopying协议到copy，mutableCopy
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-23T00:00:00+08:00" content="2017-02-23">
+              2017-02-23
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/23/从NSCopying协议到copy，mutableCopy/" class="leancloud_visitors" data-flag-title="从NSCopying协议到copy，mutableCopy">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="NSCopying-&#x5BF9;&#x5E94;copy"><a href="#NSCopying-&#x5BF9;&#x5E94;copy" class="headerlink" title="NSCopying &#x5BF9;&#x5E94;copy"></a>NSCopying &#x5BF9;&#x5E94;copy</h1><h2 id="&#x60F3;&#x8981;&#x4F7F;&#x67D0;&#x4E2A;&#x7C7B;&#x652F;&#x6301;&#x62F7;&#x8D1D;&#x529F;&#x80FD;&#xFF0C;&#x8FD4;&#x56DE;&#x4E0D;&#x53EF;&#x53D8;&#x5BF9;&#x8C61;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x5C06;&#x8FD9;&#x4E2A;&#x7C7B;&#x9075;&#x4ECE;NSCopying&#x534F;&#x8BAE;&#x5E76;&#x5B9E;&#x73B0;&#x5176;&#x4E2D;&#x7684;&#x65B9;&#x6CD5;&#x5373;&#x53EF;&#xFF08;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF09;&#x3002;"><a href="#&#x60F3;&#x8981;&#x4F7F;&#x67D0;&#x4E2A;&#x7C7B;&#x652F;&#x6301;&#x62F7;&#x8D1D;&#x529F;&#x80FD;&#xFF0C;&#x8FD4;&#x56DE;&#x4E0D;&#x53EF;&#x53D8;&#x5BF9;&#x8C61;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x5C06;&#x8FD9;&#x4E2A;&#x7C7B;&#x9075;&#x4ECE;NSCopying&#x534F;&#x8BAE;&#x5E76;&#x5B9E;&#x73B0;&#x5176;&#x4E2D;&#x7684;&#x65B9;&#x6CD5;&#x5373;&#x53EF;&#xFF08;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF09;&#x3002;" class="headerlink" title="&#x60F3;&#x8981;&#x4F7F;&#x67D0;&#x4E2A;&#x7C7B;&#x652F;&#x6301;&#x62F7;&#x8D1D;&#x529F;&#x80FD;&#xFF0C;&#x8FD4;&#x56DE;&#x4E0D;&#x53EF;&#x53D8;&#x5BF9;&#x8C61;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x5C06;&#x8FD9;&#x4E2A;&#x7C7B;&#x9075;&#x4ECE;NSCopying&#x534F;&#x8BAE;&#x5E76;&#x5B9E;&#x73B0;&#x5176;&#x4E2D;&#x7684;&#x65B9;&#x6CD5;&#x5373;&#x53EF;&#xFF08;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF09;&#x3002;"></a>&#x60F3;&#x8981;&#x4F7F;&#x67D0;&#x4E2A;&#x7C7B;&#x652F;&#x6301;&#x62F7;&#x8D1D;&#x529F;&#x80FD;&#xFF0C;&#x8FD4;&#x56DE;&#x4E0D;&#x53EF;&#x53D8;&#x5BF9;&#x8C61;&#xFF0C;&#x53EA;&#x9700;&#x8981;&#x5C06;&#x8FD9;&#x4E2A;&#x7C7B;&#x9075;&#x4ECE;NSCopying&#x534F;&#x8BAE;&#x5E76;&#x5B9E;&#x73B0;&#x5176;&#x4E2D;&#x7684;&#x65B9;&#x6CD5;&#x5373;&#x53EF;&#xFF08;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x65B9;&#x6CD5;&#xFF09;&#x3002;</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">///&lt; NSZone&#xFF1A;&#x4E4B;&#x524D;&#x518D;&#x5F00;&#x53D1;&#x7A0B;&#x5E8F;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x636E;&#x6B64;&#x628A;&#x5185;&#x5B58;&#x5206;&#x6210;&#x4E0D;&#x540C;&#x7684;&#x201C;&#x533A;&#x201D;&#xFF08;zone&#xFF09;&#xFF0C;&#x800C;&#x5BF9;&#x8C61;&#x4F1A;&#x521B;&#x5EFA;&#x5728;&#x67D0;&#x4E2A;&#x533A;&#x91CC;&#x9762;&#x3002;</div><div class="line">///&lt; &#x73B0;&#x5728;&#x6BCF;&#x4E2A;&#x7A0B;&#x5E8F;&#x53EA;&#x6709;&#x4E00;&#x4E2A;&#x533A;&#x201C;&#x9ED8;&#x8BA4;&#x533A;&#xFF08;default zone&#xFF09;&#x201D;&#xFF0C;&#x6240;&#x4EE5;&#x5C3D;&#x7BA1;&#x5FC5;&#x987B;&#x5B9E;&#x73B0;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x5FC5;&#x62C5;&#x5FC3;zone&#x53C2;&#x6570;&#x3002;</div><div class="line">- (id)copyWithZone:(nullable NSZone *)zone;</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/02/23/从NSCopying协议到copy，mutableCopy/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2016/10/07/Automatic memory leak detection on iOS-翻译/" itemprop="url">
                   Automatic memory leak detection on iOS(翻译)
                 </a>
@@ -1046,7 +1170,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1054,7 +1178,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
