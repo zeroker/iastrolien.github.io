@@ -1,90 +1,21 @@
-<!doctype html>
+<!DOCTYPE html>
 
 
+  <html class="light page-post">
 
-  
 
-
-<html class="theme-next pisces use-motion">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="utf-8">
+  
+  <title>Automatic memory leak detection on iOS(翻译) | iAstrolien</title>
 
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
+    <meta name="keywords" content="iOS,Objective-C,翻译," />
   
 
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="iAstrolien" />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/images/avatar.png?v=5.0.1" />
-
-
-
-
-
-
-<meta name="description" content="Automatic memory leak detection on iOS(iOS&amp;#x81EA;&amp;#x52A8;&amp;#x68C0;&amp;#x6D4B;&amp;#x5185;&amp;#x5B58;&amp;#x6CC4;&amp;#x6F0F;)  &amp;#x5728;&amp;#x624B;&amp;#x673A;&amp;#x4E2D;&amp;#xFF0C;&amp;#x5185;&amp;#x5B58;&amp;#x662F;&amp;#x5171;&amp;#x4EAB;&amp;#x8D44;&amp;#x">
+  <meta name="description" content="Automatic memory leak detection on iOS(iOS&amp;#x81EA;&amp;#x52A8;&amp;#x68C0;&amp;#x6D4B;&amp;#x5185;&amp;#x5B58;&amp;#x6CC4;&amp;#x6F0F;)  &amp;#x5728;&amp;#x624B;&amp;#x673A;&amp;#x4E2D;&amp;#xFF0C;&amp;#x5185;&amp;#x5B58;&amp;#x662F;&amp;#x5171;&amp;#x4EAB;&amp;#x8D44;&amp;#x">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Automatic memory leak detection on iOS(翻译)">
 <meta property="og:url" content="http://iastrolien.github.io/2016/10/07/Automatic memory leak detection on iOS-翻译/index.html">
@@ -103,36 +34,22 @@
 <meta name="twitter:description" content="Automatic memory leak detection on iOS(iOS&amp;#x81EA;&amp;#x52A8;&amp;#x68C0;&amp;#x6D4B;&amp;#x5185;&amp;#x5B58;&amp;#x6CC4;&amp;#x6F0F;)  &amp;#x5728;&amp;#x624B;&amp;#x673A;&amp;#x4E2D;&amp;#xFF0C;&amp;#x5185;&amp;#x5B58;&amp;#x662F;&amp;#x5171;&amp;#x4EAB;&amp;#x8D44;&amp;#x">
 <meta name="twitter:image" content="http://iastrolien.github.io/2016/10/07/Automatic memory leak detection on iOS-翻译/Automatic_memory_leak1.jpg">
 
+  
+
+  
+    <link rel="icon" href="/favicon.ico">
+  
+
+  <link href="/css/styles.css?v=c114cbe6" rel="stylesheet">
 
 
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Pisces',
-    sidebar: {"position":"left","display":"always"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 0,
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://iastrolien.github.io/2016/10/07/Automatic memory leak detection on iOS-翻译/"/>
-
-  <title> Automatic memory leak detection on iOS(翻译) | iAstrolien </title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  
+    <link rel="stylesheet" href="/css/personal-style.css">
+  
 
   
 
-
-
+  
   <script type="text/javascript">
     var _hmt = _hmt || [];
     (function() {
@@ -144,196 +61,168 @@
   </script>
 
 
-
-
-
+  
+  <script type="text/javascript">
+	(function(){
+	    var bp = document.createElement('script');
+	    var curProtocol = window.location.protocol.split(':')[0];
+	    if (curProtocol === 'https') {
+	        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+	    }
+	    else {
+	        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+	    }
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(bp, s);
+	})();
+  </script>
 
 
 
   
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
   
 
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">iAstrolien</span>
-      <span class="logo-line-after"><i></i></span>
+  
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  
+</head>
+
+<body>
+
+
+  
+    <span id="toolbox-mobile" class="toolbox-mobile">糖果盒</span>
+  
+
+  <div class="post-header CENTER">
+   
+  <div class="toolbox">
+    <a class="toolbox-entry" href="/">
+      <span class="toolbox-entry-text">糖果盒</span>
+      <i class="icon-angle-down"></i>
+      <i class="icon-home"></i>
     </a>
-  </div>
-  <p class="site-subtitle"></p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
+    <ul class="list-toolbox">
       
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/archives/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            博客
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/categories" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/categories/iOS"
+            rel="noopener noreferrer"
+            target="_self"
+            >
             分类
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/tag/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
             标签
           </a>
         </li>
       
-        
-        <li class="menu-item menu-item-commonweal">
-          <a href="/404.html" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
-            
-            公益404
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/link/"
+            rel="noopener noreferrer"
+            target="_self"
+            >
+            友链
           </a>
         </li>
       
-
+        <li class="item-toolbox">
+          <a
+            class="CIRCLE"
+            href="/about/"
+            rel="noopener noreferrer"
+            target="_blank"
+            >
+            关于
+          </a>
+        </li>
       
     </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                Automatic memory leak detection on iOS(翻译)
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-10-07T00:00:00+08:00" content="2016-10-07">
-              2016-10-07
-            </time>
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-             <span id="/2016/10/07/Automatic memory leak detection on iOS-翻译/" class="leancloud_visitors" data-flag-title="Automatic memory leak detection on iOS(翻译)">
-               &nbsp; | &nbsp;
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               <span class="post-meta-item-text">阅读次数 </span>
-               <span class="leancloud-visitors-count"></span>
-              </span>
-          
-
-          
-        </div>
-      </header>
-    
+  </div>
 
 
-    <div class="post-body" itemprop="articleBody">
+</div>
+
+
+  <div id="toc" class="toc-article">
+    <strong class="toc-title">文章目录</strong>
+    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Automatic-memory-leak-detection-on-iOS-iOS自动检测内存泄漏"><span class="toc-text">Automatic memory leak detection on iOS(iOS自动检测内存泄漏)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#循环引用"><span class="toc-text">循环引用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#运行时检测循环引用"><span class="toc-text">运行时检测循环引用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#对象"><span class="toc-text">对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Blocks"><span class="toc-text">Blocks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#自动化"><span class="toc-text">自动化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#手动分析"><span class="toc-text">手动分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generations"><span class="toc-text">Generations</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Check-them-out"><span class="toc-text">Check them out</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#后记"><span class="toc-text">后记</span></a></li></ol>
+  </div>
+
+
+
+<div class="content content-post CENTER">
+   <article id="post-Automatic memory leak detection on iOS-翻译" class="article article-type-post" itemprop="blogPost">
+  <header class="article-header">
+    <h1 class="post-title">Automatic memory leak detection on iOS(翻译)</h1>
+
+    <div class="article-meta">
+      <span>
+        <i class="icon-calendar"></i>
+        <span>2016.10.07</span>
+      </span>
 
       
+        <span class="article-author">
+          <i class="icon-user"></i>
+          <span>iAstrolien</span>
+        </span>
       
 
       
-        <h1 id="Automatic-memory-leak-detection-on-iOS-iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;"><a href="#Automatic-memory-leak-detection-on-iOS-iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;" class="headerlink" title="Automatic memory leak detection on iOS(iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;)"></a><a href="https://code.facebook.com/posts/583946315094347/automatic-memory-leak-detection-on-ios/" target="_blank" rel="external">Automatic memory leak detection on iOS</a>(iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;)</h1><p>  &#x5728;&#x624B;&#x673A;&#x4E2D;&#xFF0C;&#x5185;&#x5B58;&#x662F;&#x5171;&#x4EAB;&#x8D44;&#x6E90;&#x3002;Apps &#x4E0D;&#x5408;&#x7406;&#x7684;&#x7BA1;&#x7406;&#x4F1A;&#x4F7F;&#x5185;&#x5B58;&#x8017;&#x5C3D;&#xFF0C;&#x5D29;&#x6E83;&#xFF0C;&#x4EE5;&#x53CA;&#x5BFC;&#x81F4;&#x624B;&#x673A;&#x6027;&#x80FD;&#x5927;&#x5E45;&#x5EA6;&#x964D;&#x4F4E;&#x3002;<br>Facebook iOS app &#x62E5;&#x6709;&#x5F88;&#x591A;&#x7279;&#x6027;&#xFF0C;&#x4ED6;&#x4EEC;&#x5171;&#x4EAB;&#x4E00;&#x4E2A;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x3002;&#x5982;&#x679C;&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;&#x7279;&#x6027;&#x5360;&#x7528;&#x592A;&#x591A;&#x7684;&#x5185;&#x5B58;&#xFF0C;&#x4ED6;&#x5C06;&#x5F71;&#x54CD;&#x6574;&#x4E2A;app&#x7684;&#x6027;&#x80FD;&#x3002;&#x4F8B;&#x5982;&#xFF1A;&#x67D0;&#x4E2A;&#x7279;&#x6027;&#x51FA;&#x73B0;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;<br>  &#x5F53;&#x6211;&#x4EEC;&#x7ED9;&#x4E00;&#x7EC4;&#x5BF9;&#x8C61;&#x5206;&#x914D;&#x5185;&#x5B58;&#xFF0C;&#x4F7F;&#x7528;&#x5B8C;&#x540E;&#x6CA1;&#x6709;&#x91CA;&#x653E;&#xFF0C;&#x5C31;&#x4F1A;&#x9020;&#x6210;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x6CA1;&#x6709;&#x529E;&#x6CD5;&#x56DE;&#x6536;&#x5185;&#x5B58;&#x5E76;&#x91CD;&#x65B0;&#x4F7F;&#x7528;&#x5B83;&#x4EEC;&#xFF0C;&#x5185;&#x5B58;&#x7EC8;&#x5C06;&#x8017;&#x5C3D;&#x3002;<br>  <a id="more"></a><br>  &#x5728;Facebook&#xFF0C;&#x8BB8;&#x591A;&#x5DE5;&#x7A0B;&#x5E08;&#x5728;&#x4E0D;&#x540C;&#x7684;codebase&#x4E2D;&#x5DE5;&#x4F5C;&#xFF0C;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x662F;&#x4E0D;&#x53EF;&#x907F;&#x514D;&#x7684;&#x3002;&#x5F53;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x53D1;&#x751F;&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x5FEB;&#x901F;&#x7684;&#x53D1;&#x73B0;&#x5E76;&#x4FEE;&#x590D;&#x5B83;&#x4EEC;&#x3002;<br>  &#x73B0;&#x5728;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x8BB8;&#x591A;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x5DE5;&#x5177;&#xFF0C;&#x4F46;&#x662F;&#x4ED6;&#x4EEC;&#x9700;&#x8981;&#x5927;&#x91CF;&#x7684;&#x4EBA;&#x5DE5;&#x5E72;&#x9884;&#x3002;<br>  1.&#x6253;&#x5F00;Xcode&#xFF0C;&#x9009;&#x62E9;build for profiling&#x3002;<br>  2.&#x8F7D;&#x5165;Instruments&#x3002;<br>  3.&#x4F7F;&#x7528;app&#xFF0C;&#x5C3D;&#x53EF;&#x80FD;&#x5C1D;&#x8BD5;&#x91CD;&#x73B0;&#x573A;&#x666F;&#x548C;&#x884C;&#x4E3A;&#x3002;<br>  4.&#x67E5;&#x770B;leaks/memory&#x5CF0;&#x503C;&#x3002;<br>  5.&#x67E5;&#x627E;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x6839;&#x6E90;&#x3002;<br>  6.&#x89E3;&#x51B3;&#x95EE;&#x9898;&#x3002;</p>
+  <span class="article-category">
+    <i class="icon-list"></i>
+    <a class="article-category-link" href="/categories/翻译/">翻译</a>
+  </span>
+
+
+
+      
+        <span>
+          <i class="icon-comment"></i>
+          <a href="http://iastrolien.github.io/2016/10/07/Automatic memory leak detection on iOS-翻译/#disqus_thread"></a>
+        </span>
+      
+
+      
+      <i class="fa fa-eye"></i> 
+        <span id="busuanzi_container_page_pv">
+           &nbsp热度 <span id="busuanzi_value_page_pv">
+           <i class="fa fa-spinner fa-spin"></i></span>℃
+        </span>
+      
+
+      
+      
+    </div>
+  </header>
+
+  <div class="article-content">
+    
+      <h1 id="Automatic-memory-leak-detection-on-iOS-iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;"><a href="#Automatic-memory-leak-detection-on-iOS-iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;" class="headerlink" title="Automatic memory leak detection on iOS(iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;)"></a><a href="https://code.facebook.com/posts/583946315094347/automatic-memory-leak-detection-on-ios/" target="_blank" rel="external">Automatic memory leak detection on iOS</a>(iOS&#x81EA;&#x52A8;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;)</h1><p>  &#x5728;&#x624B;&#x673A;&#x4E2D;&#xFF0C;&#x5185;&#x5B58;&#x662F;&#x5171;&#x4EAB;&#x8D44;&#x6E90;&#x3002;Apps &#x4E0D;&#x5408;&#x7406;&#x7684;&#x7BA1;&#x7406;&#x4F1A;&#x4F7F;&#x5185;&#x5B58;&#x8017;&#x5C3D;&#xFF0C;&#x5D29;&#x6E83;&#xFF0C;&#x4EE5;&#x53CA;&#x5BFC;&#x81F4;&#x624B;&#x673A;&#x6027;&#x80FD;&#x5927;&#x5E45;&#x5EA6;&#x964D;&#x4F4E;&#x3002;<br>Facebook iOS app &#x62E5;&#x6709;&#x5F88;&#x591A;&#x7279;&#x6027;&#xFF0C;&#x4ED6;&#x4EEC;&#x5171;&#x4EAB;&#x4E00;&#x4E2A;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x3002;&#x5982;&#x679C;&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;&#x7279;&#x6027;&#x5360;&#x7528;&#x592A;&#x591A;&#x7684;&#x5185;&#x5B58;&#xFF0C;&#x4ED6;&#x5C06;&#x5F71;&#x54CD;&#x6574;&#x4E2A;app&#x7684;&#x6027;&#x80FD;&#x3002;&#x4F8B;&#x5982;&#xFF1A;&#x67D0;&#x4E2A;&#x7279;&#x6027;&#x51FA;&#x73B0;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;<br>  &#x5F53;&#x6211;&#x4EEC;&#x7ED9;&#x4E00;&#x7EC4;&#x5BF9;&#x8C61;&#x5206;&#x914D;&#x5185;&#x5B58;&#xFF0C;&#x4F7F;&#x7528;&#x5B8C;&#x540E;&#x6CA1;&#x6709;&#x91CA;&#x653E;&#xFF0C;&#x5C31;&#x4F1A;&#x9020;&#x6210;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;&#x8FD9;&#x610F;&#x5473;&#x7740;&#x64CD;&#x4F5C;&#x7CFB;&#x7EDF;&#x6CA1;&#x6709;&#x529E;&#x6CD5;&#x56DE;&#x6536;&#x5185;&#x5B58;&#x5E76;&#x91CD;&#x65B0;&#x4F7F;&#x7528;&#x5B83;&#x4EEC;&#xFF0C;&#x5185;&#x5B58;&#x7EC8;&#x5C06;&#x8017;&#x5C3D;&#x3002;<br>  <a id="more"></a><br>  &#x5728;Facebook&#xFF0C;&#x8BB8;&#x591A;&#x5DE5;&#x7A0B;&#x5E08;&#x5728;&#x4E0D;&#x540C;&#x7684;codebase&#x4E2D;&#x5DE5;&#x4F5C;&#xFF0C;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x662F;&#x4E0D;&#x53EF;&#x907F;&#x514D;&#x7684;&#x3002;&#x5F53;&#x8FD9;&#x79CD;&#x60C5;&#x51B5;&#x53D1;&#x751F;&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x5FEB;&#x901F;&#x7684;&#x53D1;&#x73B0;&#x5E76;&#x4FEE;&#x590D;&#x5B83;&#x4EEC;&#x3002;<br>  &#x73B0;&#x5728;&#x5DF2;&#x7ECF;&#x5B58;&#x5728;&#x8BB8;&#x591A;&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x5DE5;&#x5177;&#xFF0C;&#x4F46;&#x662F;&#x4ED6;&#x4EEC;&#x9700;&#x8981;&#x5927;&#x91CF;&#x7684;&#x4EBA;&#x5DE5;&#x5E72;&#x9884;&#x3002;<br>  1.&#x6253;&#x5F00;Xcode&#xFF0C;&#x9009;&#x62E9;build for profiling&#x3002;<br>  2.&#x8F7D;&#x5165;Instruments&#x3002;<br>  3.&#x4F7F;&#x7528;app&#xFF0C;&#x5C3D;&#x53EF;&#x80FD;&#x5C1D;&#x8BD5;&#x91CD;&#x73B0;&#x573A;&#x666F;&#x548C;&#x884C;&#x4E3A;&#x3002;<br>  4.&#x67E5;&#x770B;leaks/memory&#x5CF0;&#x503C;&#x3002;<br>  5.&#x67E5;&#x627E;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x6839;&#x6E90;&#x3002;<br>  6.&#x89E3;&#x51B3;&#x95EE;&#x9898;&#x3002;</p>
 <p>  &#x8FD9;&#x610F;&#x5473;&#x7740;&#x6BCF;&#x6B21;&#x90FD;&#x9700;&#x8981;&#x5927;&#x91CF;&#x7684;&#x624B;&#x5DE5;&#x64CD;&#x4F5C;&#x3002;&#x56E0;&#x6B64;&#xFF0C;&#x6211;&#x4EEC;&#x53EF;&#x80FD;&#x65E0;&#x6CD5;&#x5C3D;&#x65E9;&#x5728;&#x5F00;&#x53D1;&#x5468;&#x671F;&#x5185;&#x5B9A;&#x4F4D;&#x5DF2;&#x7ECF;&#x4FEE;&#x590D;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;<br>&#x5982;&#x679C;&#x8BE5;&#x8FC7;&#x7A0B;&#x53EF;&#x4EE5;&#x81EA;&#x52A8;&#x8FDB;&#x884C;&#xFF0C;&#x6211;&#x4EEC;&#x5C31;&#x53EF;&#x4EE5;&#x5728;&#x66F4;&#x5FEB;&#x7684;&#x5728;&#x6CA1;&#x6709;&#x592A;&#x591A;&#x5F00;&#x53D1;&#x8005;&#x5E72;&#x9884;&#x7684;&#x60C5;&#x51B5;&#x4E0B;&#x627E;&#x5230;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;<br>  &#x4E3A;&#x4E86;&#x89E3;&#x51B3;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#xFF0C;&#x6211;&#x4EEC;&#x5DF2;&#x7ECF;&#x6784;&#x5EFA;&#x4E86;&#x4E00;&#x7CFB;&#x5217;&#x5DE5;&#x5177;&#x6765;&#x81EA;&#x52A8;&#x5316;&#x8FD9;&#x4E2A;&#x8FC7;&#x7A0B;&#x548C;&#x5728;&#x6211;&#x4EEC;&#x7684;&#x4EE3;&#x7801;&#x5E93;&#x4E2D;&#x89E3;&#x51B3;&#x4E00;&#x4E9B;&#x95EE;&#x9898;&#x3002;&#x4ECA;&#x5929;&#xFF0C;&#x6211;&#x4EEC;&#x6FC0;&#x52A8;&#x5730;&#x5BA3;&#x5E03;&#x8FD9;&#x4E9B;&#x5DE5;&#x5177;&#x5305;&#x62EC;&#xFF1A;<a href="https://github.com/facebook/FBRetainCycleDetector" target="_blank" rel="external">FBRetainCycelDetector</a> ,<a href="https://github.com/facebook/FBAllocationTracker" target="_blank" rel="external">FBAllocationTracker</a>,<a href="https://github.com/facebook/FBMemoryProfiler" target="_blank" rel="external">FBMemoryProfiler</a>.</p>
 <hr>
 <h2 id="&#x5FAA;&#x73AF;&#x5F15;&#x7528;"><a href="#&#x5FAA;&#x73AF;&#x5F15;&#x7528;" class="headerlink" title="&#x5FAA;&#x73AF;&#x5F15;&#x7528;"></a>&#x5FAA;&#x73AF;&#x5F15;&#x7528;</h2><p>  Objective-C &#x4F7F;&#x7528;&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x7BA1;&#x7406;&#x5185;&#x5B58;&#xFF0C;&#x5E76;&#x91CA;&#x653E;&#x4E0D;&#x4F7F;&#x7528;&#x7684;&#x5BF9;&#x8C61;&#x3002;&#x4EFB;&#x4F55;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x53EF;&#x4EE5;&#x6301;&#x6709;&#x5176;&#x4ED6;&#x5BF9;&#x8C61;&#xFF0C;&#x53EA;&#x8981;&#x9700;&#x8981;&#x5C31;&#x4F1A;&#x5C06;&#x5BF9;&#x8C61;&#x4FDD;&#x6301;&#x5728;&#x5185;&#x5B58;&#x5F53;&#x4E2D;&#x3002;&#x6362;&#x53E5;&#x8BDD;&#x8BF4;&#x5C31;&#x662F;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x62E5;&#x6709;&#x53E6;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x3002;<br>  &#x5927;&#x591A;&#x6570;&#x60C5;&#x51B5;&#x4E0B;&#x90FD;&#x4F1A;&#x5F88;&#x597D;&#x7684;&#x5DE5;&#x4F5C;&#x3002;&#x4F46;&#x662F;&#x5F53;&#x4E24;&#x4E2A;&#x5BF9;&#x8C61;&#x4E92;&#x76F8;&#x6301;&#x6709;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x76F4;&#x63A5;&#x6216;&#x8005;&#x95F4;&#x63A5;&#x7684;&#x8FDE;&#x63A5;&#x8FD9;&#x4E24;&#x4E2A;&#x5BF9;&#x8C61;&#xFF0C;&#x5C31;&#x4F1A;&#x4EA7;&#x751F;&#x4E00;&#x79CD;&#x50F5;&#x5C40;&#x3002; &#x8FD9;&#x79CD;&#x6301;&#x6709;&#x65B9;&#x5F0F;&#x53EB;&#x505A;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x3002;<br>  <img src="/2016/10/07/Automatic memory leak detection on iOS-&#x7FFB;&#x8BD1;/Automatic_memory_leak1.jpg" alt="Automatic_memory_leak1"><br>  &#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x4F1A;&#x5F15;&#x8D77;&#x4E00;&#x7CFB;&#x5217;&#x95EE;&#x9898;&#x3002;&#x6700;&#x597D;&#x7684;&#x7ED3;&#x679C;&#x662F;&#x5185;&#x5B58;&#x5728;RAM&#x4E2D;&#x53EA;&#x5360;&#x636E;&#x4E00;&#x70B9;&#x70B9;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x3002;&#x5982;&#x679C;&#x6CC4;&#x6F0F;&#x7684;&#x5BF9;&#x8C61;&#x53EA;&#x662F;&#x505A;&#x4E00;&#x4E9B;&#x4E0D;&#x5E73;&#x51E1;&#x7684;&#x4E8B;&#x60C5;&#xFF0C;&#x90A3;&#x4E48;&#x5176;&#x4ED6;app&#x5C31;&#x53EA;&#x80FD;&#x4F7F;&#x7528;&#x66F4;&#x5C11;&#x7684;&#x5185;&#x5B58;&#x3002;&#x6700;&#x5DEE;&#x7684;&#x60C5;&#x51B5;&#x5C31;&#x662F;app&#x6CC4;&#x6F0F;&#x7684;&#x5185;&#x5B58;&#x8D85;&#x8FC7;&#x6700;&#x5927;&#x53EF;&#x4F7F;&#x7528;&#x5185;&#x5B58;&#xFF0C;app&#x5C31;&#x4F1A;&#x5D29;&#x6E83;&#x3002;<br>  &#x5728;&#x624B;&#x52A8;&#x5206;&#x6790;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#xFF0C;&#x6211;&#x4EEC;&#x4F1A;&#x53D1;&#x73B0;&#x5927;&#x91CF;&#x7684;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x3002;&#x4ED6;&#x4EEC;&#x5728;&#x65E9;&#x8D77;&#x5F00;&#x53D1;&#x7684;&#x65F6;&#x5019;&#x5F88;&#x5BB9;&#x6613;&#x51FA;&#x73B0;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x4EE5;&#x540E;&#x5F88;&#x96BE;&#x627E;&#x5230;&#x4ED6;&#x4EEC;&#x3002;Retain Cycle Detector &#x53EF;&#x4EE5;&#x5E2E;&#x52A9;&#x6211;&#x4EEC;&#x5F88;&#x5BB9;&#x6613;&#x7684;&#x627E;&#x5230;&#x4ED6;&#x4EEC;&#x3002;</p>
@@ -356,397 +245,176 @@
 <h3 id="Check-them-out"><a href="#Check-them-out" class="headerlink" title="Check them out"></a>Check them out</h3><p>  &#x65E0;&#x8BBA;&#x4F60;&#x7684;app&#x662F;&#x5927;&#x662F;&#x5C0F;&#xFF0C;&#x529F;&#x80FD;&#x662F;&#x591A;&#x662F;&#x5C11;&#xFF0C;&#x597D;&#x7684;&#x5185;&#x5B58;&#x7BA1;&#x7406;&#x603B;&#x662F;&#x5FC5;&#x8981;&#x7684;&#x3002;&#x901A;&#x8FC7;&#x8FD9;&#x4E9B;&#x5DE5;&#x5177;&#xFF0C;&#x6211;&#x4EEC;&#x80FD;&#x591F;&#x8F7B;&#x677E;&#x5730;&#x627E;&#x5230;&#x5E76;&#x89E3;&#x51B3;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#xFF0C;&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x82B1;&#x66F4;&#x5C11;&#x7684;&#x65F6;&#x95F4;&#x5728;&#x624B;&#x52A8;&#x67E5;&#x627E;&#x7684;&#x8FC7;&#x7A0B;&#xFF0C;&#x82B1;&#x66F4;&#x591A;&#x7684;&#x65F6;&#x95F4;&#x7F16;&#x5199;&#x66F4;&#x597D;&#x7684;&#x4EE3;&#x7801;&#x3002;</p>
 <h1 id="&#x540E;&#x8BB0;"><a href="#&#x540E;&#x8BB0;" class="headerlink" title="&#x540E;&#x8BB0;"></a>&#x540E;&#x8BB0;</h1><p>  &#x5948;&#x4F55;&#x672C;&#x4EBA;&#x82F1;&#x6587;&#x4E00;&#x76F4;&#x5F88;&#x5DEE;&#xFF0C;&#x770B;&#x82F1;&#x6587;&#x6587;&#x7AE0;&#x548C;&#x6587;&#x6863;&#x90FD;&#x8D39;&#x52B2;&#xFF0C;&#x66F4;&#x4E0D;&#x8981;&#x8BF4;&#x7FFB;&#x8BD1;&#x4E86;&#x3002;&#x8FD9;&#x7BC7;&#x6587;&#x7AE0;&#x82B1;&#x4E86;&#x4E00;&#x4E0B;&#x5348;&#x65F6;&#x95F4;&#x8FDB;&#x884C;&#x7FFB;&#x8BD1;&#xFF0C;&#x7F51;&#x4E0A;&#x67E5;&#x8D44;&#x6599;&#xFF0C;&#x7528;google&#x7FFB;&#x8BD1;&#xFF0C;&#x6709;&#x9053;&#x7FFB;&#x8BD1;&#x67E5;&#x53E5;&#x5B50;&#xFF0C;&#x67E5;&#x5355;&#x8BCD;&#x3002;&#x6700;&#x7EC8;&#x7FFB;&#x8BD1;&#x5B8C;&#x6210;&#x3002;<br>  &#x5728;&#x7FFB;&#x8BD1;&#x7684;&#x8FC7;&#x7A0B;&#x4E2D;&#x8FD8;&#x662F;&#x5B66;&#x5230;&#x4E86;&#x5F88;&#x591A;&#x4E1C;&#x897F;&#xFF0C;&#x65E0;&#x8BBA;&#x662F;&#x6280;&#x672F;&#x4E0A;&#x7684;&#x8FD8;&#x662F;&#x8BED;&#x8A00;&#x4E0A;&#x7684;&#x3002;Facebook&#x7684;&#x6587;&#x7AE0;&#x90FD;&#x5F88;&#x68D2;&#xFF0C;&#x4EE5;&#x540E;&#x4F1A;&#x7EE7;&#x7EED;&#x5C06;Facebook&#x7684;&#x5176;&#x4ED6;&#x6587;&#x7AE0;&#x7FFB;&#x8BD1;&#x51FA;&#x6765;&#x3002;</p>
 
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2016/08/07/又要Blog了哟……/" rel="next" title="又要Blog了哟……">
-                <i class="fa fa-chevron-left"></i> 又要Blog了哟……
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/02/23/从NSCopying协议到copy，mutableCopy/" rel="prev" title="从NSCopying协议到copy，mutableCopy">
-                从NSCopying协议到copy，mutableCopy <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
-    </div>
-  </div>
-
-
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
     
   </div>
+</article>
 
 
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+   
+
+   
+  <div class="box-prev-next clearfix">
+    <a class="show pull-left" href="/2016/08/07/又要Blog了哟……/">
+        <i class="icon icon-angle-left"></i>
+    </a>
+    <a class="show pull-right" href="/2017/02/23/从NSCopying协议到copy，mutableCopy/">
+        <i class="icon icon-angle-right"></i>
+    </a>
   </div>
 
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/images/avatar.png"
-               alt="iAstrolien" />
-          <p class="site-author-name" itemprop="name">iAstrolien</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">8</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/categories">
-                <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Automatic-memory-leak-detection-on-iOS-iOS自动检测内存泄漏"><span class="nav-number">1.</span> <span class="nav-text">Automatic memory leak detection on iOS(iOS自动检测内存泄漏)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#循环引用"><span class="nav-number">1.1.</span> <span class="nav-text">循环引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时检测循环引用"><span class="nav-number">1.2.</span> <span class="nav-text">运行时检测循环引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对象"><span class="nav-number">1.2.1.</span> <span class="nav-text">对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blocks"><span class="nav-number">1.2.2.</span> <span class="nav-text">Blocks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自动化"><span class="nav-number">1.2.3.</span> <span class="nav-text">自动化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动分析"><span class="nav-number">1.2.4.</span> <span class="nav-text">手动分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generations"><span class="nav-number">1.2.5.</span> <span class="nav-text">Generations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Check-them-out"><span class="nav-number">1.2.6.</span> <span class="nav-text">Check them out</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#后记"><span class="nav-number">2.</span> <span class="nav-text">后记</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
 
 
-        
-      </div>
-    </main>
 
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2017</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">iAstrolien</span>
 </div>
 
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
 
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Pisces
+  <a id="backTop" class="back-top">
+    <i class="icon-angle-up"></i>
   </a>
-</div>
 
+
+
+
+  <div class="modal" id="modal">
+  <span id="cover" class="cover hide"></span>
+  <div id="modal-dialog" class="modal-dialog hide-dialog">
+    <div class="modal-header">
+      <span id="close" class="btn-close">关闭</span>
+    </div>
+    <hr>
+    <div class="modal-body">
+      <ul class="list-toolbox">
         
-
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/archives/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              博客
+            </a>
+          </li>
         
-      </div>
-    </footer>
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/categories/iOS"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              分类
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/tag/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              标签
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/link/"
+              rel="noopener noreferrer"
+              target="_self"
+              >
+              友链
+            </a>
+          </li>
+        
+          <li class="item-toolbox">
+            <a
+              class="CIRCLE"
+              href="/about/"
+              rel="noopener noreferrer"
+              target="_blank"
+              >
+              关于
+            </a>
+          </li>
+        
+      </ul>
 
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
+</div>
 
 
 
   
+      <div class="fexo-comments comments-post">
+    
+  <section class="disqus-comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+  </section>
 
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-
-  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
-
-
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
-
-
-
-  
-
-
-
-  
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("gB4aVdMalprphVIqcvm5PJXn-gzGzoHsz", "M2kuXyzqPUhAgB9Wxojo4VUS");</script>
   <script>
-    function showTime(Counter) {
-      var query = new AV.Query(Counter);
-      var entries = [];
-      var $visitors = $(".leancloud_visitors");
-
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      query.containedIn('url', entries);
-      query.find()
-        .done(function (results) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.get('url');
-            var time = item.get('time');
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
-          }
-        })
-        .fail(function (object, error) {
-          console.log("Error: " + error.code + " " + error.message);
-        });
-    }
-
-    function addCount(Counter) {
-      var $visitors = $(".leancloud_visitors");
-      var url = $visitors.attr('id').trim();
-      var title = $visitors.attr('data-flag-title').trim();
-      var query = new AV.Query(Counter);
-
-      query.equalTo("url", url);
-      query.find({
-        success: function(results) {
-          if (results.length > 0) {
-            var counter = results[0];
-            counter.fetchWhenSave(true);
-            counter.increment("time");
-            counter.save(null, {
-              success: function(counter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(counter.get('time'));
-              },
-              error: function(counter, error) {
-                console.log('Failed to save Visitor num, with error message: ' + error.message);
-              }
-            });
-          } else {
-            var newcounter = new Counter();
-            /* Set ACL */
-            var acl = new AV.ACL();
-            acl.setPublicReadAccess(true);
-            acl.setPublicWriteAccess(true);
-            newcounter.setACL(acl);
-            /* End Set ACL */
-            newcounter.set("title", title);
-            newcounter.set("url", url);
-            newcounter.set("time", 1);
-            newcounter.save(null, {
-              success: function(newcounter) {
-                var $element = $(document.getElementById(url));
-                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
-              },
-              error: function(newcounter, error) {
-                console.log('Failed to create');
-              }
-            });
-          }
-        },
-        error: function(error) {
-          console.log('Error:' + error.code + " " + error.message);
-        }
-      });
-    }
-
-    $(function() {
-      var Counter = AV.Object.extend("Counter");
-      if ($('.leancloud_visitors').length == 1) {
-        addCount(Counter);
-      } else if ($('.post-title-link').length > 1) {
-        showTime(Counter);
-      }
-    });
+    var disqus_shortname = 'forsigner';
+    
+    var disqus_url = 'http://iastrolien.github.io/2016/10/07/Automatic memory leak detection on iOS-翻译/';
+    
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type = 'text/javascript';
+      dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
   </script>
 
+  <script id="dsq-count-scr" src="//forsigner.disqus.com/count.js" async></script>
 
+
+
+    
+
+
+
+
+    
+
+  </div>
 
   
+
+  <script type="text/javascript">
+  function loadScript(url, callback) {
+    var script = document.createElement('script')
+    script.type = 'text/javascript';
+
+    if (script.readyState) { //IE
+      script.onreadystatechange = function() {
+        if (script.readyState == 'loaded' ||
+          script.readyState == 'complete') {
+          script.onreadystatechange = null;
+          callback();
+        }
+      };
+    } else { //Others
+      script.onload = function() {
+        callback();
+      };
+    }
+
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+  }
+
+  window.onload = function() {
+    loadScript('/js/bundle.js?235683', function() {
+      // load success
+    });
+  }
+</script>
 
 </body>
 </html>
