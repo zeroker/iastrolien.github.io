@@ -1,0 +1,762 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,Objective-C," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/avatar.png?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="&amp;#x5BF9;&amp;#x4E8E;&amp;#x95ED;&amp;#x5305;&amp;#x7684;&amp;#x5B9A;&amp;#x4E49;&amp;#x4EE5;&amp;#x53CA;&amp;#x5176;&amp;#x4ED6;&amp;#x5B9A;&amp;#x4E49;&amp;#x5C31;&amp;#x4E0D;&amp;#x591A;&amp;#x8BF4;&amp;#x4E86;&amp;#x3002;&amp;#x4E3B;&amp;#x8981;&amp;#x8BF4;&amp;#x4E00;&amp;#x4E0B;&amp;#xFF1A;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C_Block">
+<meta property="og:url" content="http://iastrolien.github.io/2017/02/27/Objective-C_Block/index.html">
+<meta property="og:site_name" content="iAstrolien">
+<meta property="og:description" content="&amp;#x5BF9;&amp;#x4E8E;&amp;#x95ED;&amp;#x5305;&amp;#x7684;&amp;#x5B9A;&amp;#x4E49;&amp;#x4EE5;&amp;#x53CA;&amp;#x5176;&amp;#x4ED6;&amp;#x5B9A;&amp;#x4E49;&amp;#x5C31;&amp;#x4E0D;&amp;#x591A;&amp;#x8BF4;&amp;#x4E86;&amp;#x3002;&amp;#x4E3B;&amp;#x8981;&amp;#x8BF4;&amp;#x4E00;&amp;#x4E0B;&amp;#xFF1A;">
+<meta property="og:image" content="http://iastrolien.github.io/2017/02/27/Objective-C_Block/objective-C_block_1.png">
+<meta property="og:updated_time" content="2017-02-27T03:24:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C_Block">
+<meta name="twitter:description" content="&amp;#x5BF9;&amp;#x4E8E;&amp;#x95ED;&amp;#x5305;&amp;#x7684;&amp;#x5B9A;&amp;#x4E49;&amp;#x4EE5;&amp;#x53CA;&amp;#x5176;&amp;#x4ED6;&amp;#x5B9A;&amp;#x4E49;&amp;#x5C31;&amp;#x4E0D;&amp;#x591A;&amp;#x8BF4;&amp;#x4E86;&amp;#x3002;&amp;#x4E3B;&amp;#x8981;&amp;#x8BF4;&amp;#x4E00;&amp;#x4E0B;&amp;#xFF1A;">
+<meta name="twitter:image" content="http://iastrolien.github.io/2017/02/27/Objective-C_Block/objective-C_block_1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://iastrolien.github.io/2017/02/27/Objective-C_Block/"/>
+
+  <title> Objective-C_Block | iAstrolien </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?35d9265d3f8770b8ea1f03b830990ff1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">iAstrolien</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Objective-C_Block
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-02-27T00:00:00+08:00" content="2017-02-27">
+              2017-02-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/27/Objective-C_Block/" class="leancloud_visitors" data-flag-title="Objective-C_Block">
+               &nbsp; | &nbsp;
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>&#x5BF9;&#x4E8E;&#x95ED;&#x5305;&#x7684;&#x5B9A;&#x4E49;&#x4EE5;&#x53CA;&#x5176;&#x4ED6;&#x5B9A;&#x4E49;&#x5C31;&#x4E0D;&#x591A;&#x8BF4;&#x4E86;&#x3002;<br>&#x4E3B;&#x8981;&#x8BF4;&#x4E00;&#x4E0B;&#xFF1A;1&#x3001;Block&#x5185;&#x90E8;&#x5B9E;&#x73B0;<br>          2&#x3001;Block&#x79CD;&#x7C7B;<br>          3&#x3001;__block&#x53D8;&#x91CF;&#x4EE5;&#x53CA;&#x5FAA;&#x73AF;&#x5F15;&#x7528;</p>
+<a id="more"></a>
+<h1 id="Block&#x5B9E;&#x73B0;"><a href="#Block&#x5B9E;&#x73B0;" class="headerlink" title="Block&#x5B9E;&#x73B0;"></a>Block&#x5B9E;&#x73B0;</h1><h2 id="Block&#x5185;&#x5B58;&#x7ED3;&#x6784;"><a href="#Block&#x5185;&#x5B58;&#x7ED3;&#x6784;" class="headerlink" title="Block&#x5185;&#x5B58;&#x7ED3;&#x6784;"></a>Block&#x5185;&#x5B58;&#x7ED3;&#x6784;</h2><p><img src="/2017/02/27/Objective-C_Block/objective-C_block_1.png" alt="objective-C_block_1"></p>
+<p>  &#x5BF9;&#x5E94;&#x7ED3;&#x6784;&#x4F53;<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">  struct __block_impl {</div><div class="line">  void *isa;         ///&lt; &#x5BF9;&#x8C61;&#x6307;&#x9488;</div><div class="line">  int Flags;         ///&lt; block&#x9644;&#x52A0;&#x4FE1;&#x606F;&#x3002;&#xFF08;bit&#x8868;&#x793A;&#xFF09;</div><div class="line">  int Reserved;      ///&lt; &#x4FDD;&#x7559;</div><div class="line">  void *FuncPtr;     ///&lt; &#x51FD;&#x6570;&#x6307;&#x9488;</div><div class="line">};</div><div class="line"></div><div class="line">static struct __testBlockMethod_block_desc_0 {</div><div class="line">  size_t reserved;           ///&lt; &#x4FDD;&#x7559;</div><div class="line">  size_t Block_size;         ///&lt; block&#x5927;&#x5C0F;</div><div class="line">  ///&lt; copy&#x548C;dispose&#x53EA;&#x6709; &#x4F7F;&#x7528;&#x4E86;__block &#x53D8;&#x91CF;&#x624D;&#x4F1A;&#x4EA7;&#x751F;  &#x5BF9;&#x622A;&#x83B7;&#x5BF9;&#x8C61;&#x7684;&#x6301;&#x6709;or&#x91CA;&#x653E;</div><div class="line">  ///&lt; copy:&#x6808;&#x4E0A;&#x7684;block&#x590D;&#x5236;&#x5230;&#x5806;&#x4E0A; &#x65F6;&#x8C03;&#x7528;</div><div class="line">  ///&lt; dispose:&#x5806;&#x4E0A;&#x7684;block&#x88AB;&#x5E9F;&#x5F03; &#x65F6;&#x8C03;&#x7528;</div><div class="line">  void (*copy)(struct __testBlockMethod_block_impl_0*, struct __testBlockMethod_block_impl_0*);</div><div class="line">  void (*dispose)(struct __testBlockMethod_block_impl_0*);</div><div class="line">} __testBlockMethod_block_desc_0_DATA = { 0, sizeof(struct __testBlockMethod_block_impl_0), __testBlockMethod_block_copy_0, __testBlockMethod_block_dispose_0};</div><div class="line"></div><div class="line">struct __Block_byref_testValue1_0 {</div><div class="line">  void *__isa;</div><div class="line">__Block_byref_testValue1_0 *__forwarding;    ///&lt; &#x4E00;&#x4E2A;&#x6307;&#x5411;&#x81EA;&#x8EAB;&#x7684;&#x6307;&#x9488;&#x3002;&#xFF08;&#x5F53;__block&#x53D8;&#x91CF;&#x590D;&#x5236;&#x5230;&#x5806;&#x4E0A;&#x540E;&#xFF0C;__forwarding&#x6307;&#x5411;&#x590D;&#x5236;&#x5230;&#x5806;&#x4E0A;&#x7684;__block&#x53D8;&#x91CF;&#x7684;&#x7ED3;&#x6784;&#x4F53;&#x7684;&#x6307;&#x9488;&#x3002;&#x6240;&#x4EE5;&#xFF1A;&#x4E0D;&#x7BA1;__block&#x53D8;&#x91CF;&#x914D;&#x7F6E;&#x5728;&#x6808;&#x4E0A;&#x8FD8;&#x662F;&#x5806;&#x4E0A;&#xFF0C;&#x90FD;&#x80FD;&#x591F;&#x6B63;&#x786E;&#x8BBF;&#x95EE;&#x53D8;&#x91CF;&#x3002;)</div><div class="line"> int __flags;</div><div class="line"> int __size;</div><div class="line"> int testValue1;</div><div class="line">};</div><div class="line"></div><div class="line">struct __testBlockMethod_block_impl_0 {</div><div class="line">  struct __block_impl impl;                             ///&lt; &#x51FD;&#x6570;&#x6307;&#x9488;&#xFF0C;&#x4E0A;&#x56FE;&#x7684;invoke</div><div class="line">  struct __testBlockMethod_block_desc_0* Desc;          ///&lt; block&#x7684;&#x9644;&#x52A0;&#x4FE1;&#x606F;</div><div class="line">  __Block_byref_testValue1_0 *testValue1; // by ref</div><div class="line">  __Block_byref_testValue2_1 *testValue2; // by ref</div><div class="line">  __testBlockMethod_block_impl_0(void *fp, struct __testBlockMethod_block_desc_0 *desc, __Block_byref_testValue1_0 *_testValue1, __Block_byref_testValue2_1 *_testValue2, int flags=0) : testValue1(_testValue1-&gt;__forwarding), testValue2(_testValue2-&gt;__forwarding) {</div><div class="line">    impl.isa = &amp;_NSConcreteStackBlock;</div><div class="line">    impl.Flags = flags;</div><div class="line">    impl.FuncPtr = fp;</div><div class="line">    Desc = desc;</div><div class="line">  }</div><div class="line">};</div></pre></td></tr></table></figure></p>
+<p>  &#x4E0A;&#x56FE;&#x8868;&#x793A;&#x7684;&#x662F;block&#x7684;&#x5185;&#x5B58;&#x7ED3;&#x6784;&#xFF0C;&#x5176;&#x4E2D;&#x6700;&#x91CD;&#x8981;&#x7684;&#x662F;invoke&#x3002;&#x8FD9;&#x4E2A;&#x53D8;&#x91CF;&#x662F;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#x6307;&#x9488;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x4ED6;&#x7684;&#x7B2C;&#x4E00;&#x4E2A;&#x53C2;&#x6570;&#x662F;&#xFF1A;void <em> &#xFF08;&#x8FD9;&#x4E2A;&#x53C2;&#x6570;&#x4EE3;&#x8868;block&#xFF09;&#x3002;why&#xFF1F;**</em> &#x56E0;&#x4E3A;&#x5728;&#x6267;&#x884C;block&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x9700;&#x8981;&#x4ECE;&#x5185;&#x5B58;&#x4E2D;&#x628A;block&#x6240;&#x6355;&#x83B7;&#x7684;&#x53D8;&#x91CF;&#x8BFB;&#x51FA;&#x6765;&#x3002;<em>*</em><br>  &#x95EE;&#x9898;&#x6765;&#x4E86;&#xFF0C;block&#x6355;&#x83B7;&#x7684;&#x53D8;&#x91CF;&#x5728;&#x5185;&#x5B58;&#x91CC;&#xFF1F; &#x662F;&#x7684;&#xFF0C;block&#x4F1A;&#x628A;&#x6240;&#x6709;&#x6355;&#x83B7;&#x7684;&#x53D8;&#x91CF;copy&#x4E00;&#x4EFD;&#xFF0C;&#x653E;&#x5728;&#x4E0A;&#x56FE;&#x4E2D;descriptor&#x7684;&#x540E;&#x9762;&#x3002;&#x6355;&#x83B7;&#x4E86;&#x591A;&#x5C11;&#x53D8;&#x91CF;&#xFF0C;&#x5C31;&#x8981;&#x5360;&#x636E;&#x591A;&#x5C11;&#x5185;&#x5B58;&#x3002;&#xFF08;&#x8FD9;&#x91CC;copy&#x7684;&#x5E76;&#x4E0D;&#x662F;&#x5BF9;&#x8C61;&#x672C;&#x8EAB;&#xFF0C;&#x800C;&#x662F;&#x6307;&#x5411;&#x8FD9;&#x4E9B;&#x5BF9;&#x8C61;&#x7684;&#x6307;&#x9488;&#xFF09;</p>
+<p>  eg:&#x73B0;&#x5728;&#x6765;&#x4F7F;&#x7528;clang -rewrite-objc -filename &#x6765;&#x770B;&#x4E00;&#x4E0B;block<br>  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div></pre></td><td class="code"><pre><div class="line">  #include &lt;stdio.h&gt;</div><div class="line"></div><div class="line">void testBlockMethod() {</div><div class="line">    int testValue1 = 10;</div><div class="line">    void (^testBlock)(void) = ^ {</div><div class="line">        printf(&quot;%d\n&quot;, testValue1);</div><div class="line">    };</div><div class="line">    testBlock();</div><div class="line">}</div><div class="line"></div><div class="line">///&lt; &#x4EA7;&#x751F;&#x7684;&#x6E90;&#x4EE3;&#x7801;</div><div class="line"></div><div class="line">struct __block_impl {</div><div class="line">  void *isa;</div><div class="line">  int Flags;</div><div class="line">  int Reserved;</div><div class="line">  void *FuncPtr;</div><div class="line">};</div><div class="line">struct __testBlockMethod_block_impl_0 {</div><div class="line">  struct __block_impl impl;</div><div class="line">  struct __testBlockMethod_block_desc_0* Desc;</div><div class="line">  int testValue1;</div><div class="line">  __testBlockMethod_block_impl_0(void *fp, struct __testBlockMethod_block_desc_0 *desc, int _testValue1, int flags=0) : testValue1(_testValue1) {</div><div class="line">    impl.isa = &amp;_NSConcreteStackBlock;    ///&lt; &#x662F;&#x7684;&#xFF0C;Block&#x662F;&#x4E2A;OC&#x5BF9;&#x8C61;&#xFF0C;&#xFF08;&#x60F3;&#x4E00;&#x4E0B;OC&#x5BF9;&#x8C61;&#x7ED3;&#x6784;&#xFF09;&#x3002; _NSConcreteStackBlock&#x5BF9;&#x5E94;_NSConcreteGlobalBlock&#x548C;_NSConcreteMallocBlock&#x3002;&#x662F;&#x7684;&#xFF0C;Block&#x5206;&#x4E3A;&#x6808;Block&#x3001;&#x5168;&#x5C40;Block&#x548C;&#x5806;Block&#x3002;&#x5982;&#x679C;&#x4F60;&#x7684;Block&#x6355;&#x83B7;&#x5468;&#x56F4;&#x53D8;&#x91CF;&#xFF08;testValue1&#xFF09;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4F1A;&#x5728;&#x6808;&#x4E0A;&#x3002;&#x5982;&#x679C;&#x5BF9;&#x6808;Block&#x6267;&#x884C;copy&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x4F1A;&#x53BB;&#x5806;&#x4E0A;&#x3002;</div><div class="line">    impl.Flags = flags;</div><div class="line">    impl.FuncPtr = fp;</div><div class="line">    Desc = desc;</div><div class="line">  }</div><div class="line">};</div><div class="line">static void __testBlockMethod_block_func_0(struct __testBlockMethod_block_impl_0 *__cself) {</div><div class="line">  int testValue1 = __cself-&gt;testValue1; // bound by copy</div><div class="line"></div><div class="line">        printf(&quot;%d\n&quot;, testValue1);</div><div class="line">    }</div><div class="line"></div><div class="line">static struct __testBlockMethod_block_desc_0 {</div><div class="line">  size_t reserved;</div><div class="line">  size_t Block_size;</div><div class="line">} __testBlockMethod_block_desc_0_DATA = { 0, sizeof(struct __testBlockMethod_block_impl_0)};</div><div class="line">void testBlockMethod() {</div><div class="line">    int testValue1 = 10;</div><div class="line">    void (*testBlock)(void) = ((void (*)())&amp;__testBlockMethod_block_impl_0((void *)__testBlockMethod_block_func_0, &amp;__testBlockMethod_block_desc_0_DATA, testValue1));</div><div class="line">//    struct __testBlockMethod_block_impl_0 tempTestBlock = __testBlockMethod_block_impl_0((void *)__testBlockMethod_block_func_0, &amp;__testBlockMethod_block_desc_0_DATA, testValue1);</div><div class="line">//    struct __testBlockMethod_block_impl_0 *testBlock = &amp;tempTestBlock;</div><div class="line">//    ///&lt; __testBlockMethod_block_impl_0 &#x6784;&#x9020;&#x51FD;&#x6570;</div><div class="line">//    __testBlockMethod_block_impl_0(__testBlockMethod_block_func_0, __testBlockMethod_block_desc_0_DATA, testValue1, 0) {</div><div class="line">//        testValue1      = _testValue1;</div><div class="line">//        </div><div class="line">//        impl.isa        = &amp;_NSConcreteStackBlock;</div><div class="line">//        impl.Flags      = 0;</div><div class="line">//        impl.FuncPtr    = __testBlockMethod_block_func_0;</div><div class="line">//        impl.Desc       = &amp;__testBlockMethod_block_desc_0_DATA;</div><div class="line">//    }</div><div class="line">    ((void (*)(__block_impl *))((__block_impl *)testBlock)-&gt;FuncPtr)((__block_impl *)testBlock);</div><div class="line">//    (testBlock-&gt;FuncPtr)(testBlock);    ///&lt; &#x660E;&#x663E;&#x7684;&#x51FD;&#x6570;&#x6307;&#x9488;&#x8C03;&#x7528;</div><div class="line">}</div><div class="line">static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };</div></pre></td></tr></table></figure></p>
+<p>&#x901A;&#x8FC7;&#x4E0A;&#x8FF0;&#x5B9E;&#x4F8B;&#xFF0C;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5982;&#x679C;&#x5C06;C&#x8BED;&#x8A00;&#x6570;&#x7EC4;&#x622A;&#x83B7;&#x7684;&#x8BDD;&#xFF0C;&#x90A3;&#x5C31;&#x4F1A;&#x4EA7;&#x751F;&#x8BF8;&#x5982;&#xFF1A;<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">int testValueA[10] = { 1 };</div><div class="line">int testValueB[10] = testVauleA;</div></pre></td></tr></table></figure></p>
+<p>&#x6B64;&#x7C7B;&#x7684;&#x4EE3;&#x7801;&#x4E86;&#xFF0C;C&#x8BED;&#x8A00;&#x89C4;&#x8303;&#x4E0D;&#x5141;&#x8BB8;&#x6B64;&#x7C7B;&#x8D4B;&#x503C;&#x3002;</p>
+<h1 id="Block&#x79CD;&#x7C7B;"><a href="#Block&#x79CD;&#x7C7B;" class="headerlink" title="Block&#x79CD;&#x7C7B;"></a>Block&#x79CD;&#x7C7B;</h1><h2 id="&#x5168;&#x5C40;Block-NSConcreteGlobalBlock-&#x7A0B;&#x5E8F;&#x7684;&#x6570;&#x636E;&#x533A;&#x57DF;-data-&#x4E0D;&#x4F1A;&#x8BBF;&#x95EE;&#x5916;&#x90E8;&#x53D8;&#x91CF;"><a href="#&#x5168;&#x5C40;Block-NSConcreteGlobalBlock-&#x7A0B;&#x5E8F;&#x7684;&#x6570;&#x636E;&#x533A;&#x57DF;-data-&#x4E0D;&#x4F1A;&#x8BBF;&#x95EE;&#x5916;&#x90E8;&#x53D8;&#x91CF;" class="headerlink" title="&#x5168;&#x5C40;Block  _NSConcreteGlobalBlock (&#x7A0B;&#x5E8F;&#x7684;&#x6570;&#x636E;&#x533A;&#x57DF;.data)(&#x4E0D;&#x4F1A;&#x8BBF;&#x95EE;&#x5916;&#x90E8;&#x53D8;&#x91CF;)"></a>&#x5168;&#x5C40;Block  _NSConcreteGlobalBlock (&#x7A0B;&#x5E8F;&#x7684;&#x6570;&#x636E;&#x533A;&#x57DF;.data)(&#x4E0D;&#x4F1A;&#x8BBF;&#x95EE;&#x5916;&#x90E8;&#x53D8;&#x91CF;)</h2><p>  Block&#x5185;&#x90E8;&#x6CA1;&#x6709;&#x6355;&#x83B7;&#x4EFB;&#x4F55;&#x5916;&#x90E8;&#x53D8;&#x91CF;&#x3002;<br>  &#x5168;&#x5C40;Block&#x4E0D;&#x4F1A;&#x6355;&#x6349;&#x4EFB;&#x4F55;&#x72B6;&#x6001;&#xFF0C;&#x4ED6;&#x7684;&#x5185;&#x5B58;&#x533A;&#x57DF;&#x5728;&#x7F16;&#x8BD1;&#x671F;&#x5DF2;&#x7ECF;&#x5B8C;&#x5168;&#x786E;&#x5B9A;&#xFF0C;&#x4ED6;&#x58F0;&#x660E;&#x5728;&#x5168;&#x5C40;&#x5185;&#x5B58;&#x91CC;&#xFF0C;&#x4E0D;&#x9700;&#x8981;&#x6BCF;&#x6B21;&#x7528;&#x5230;&#x7684;&#x65F6;&#x5019;&#x518D;&#x5728;&#x6808;&#x4E0A;&#x521B;&#x5EFA;&#x3002;&#x5168;&#x5C40;Block&#x76F8;&#x5F53;&#x4E8E;&#x5355;&#x4F8B;&#xFF0C;&#x6240;&#x4EE5;&#x4E0D;&#x4F1A;&#x88AB;&#x7CFB;&#x7EDF;&#x56DE;&#x6536;&#x3002;</p>
+<h2 id="&#x6808;Block-NSConcreteStackBlock-&#x6808;-&#x8FD4;&#x56DE;&#x65F6;&#x9500;&#x6BC1;"><a href="#&#x6808;Block-NSConcreteStackBlock-&#x6808;-&#x8FD4;&#x56DE;&#x65F6;&#x9500;&#x6BC1;" class="headerlink" title="&#x6808;Block  _NSConcreteStackBlock (&#x6808;)(&#x8FD4;&#x56DE;&#x65F6;&#x9500;&#x6BC1;)"></a>&#x6808;Block  _NSConcreteStackBlock (&#x6808;)(&#x8FD4;&#x56DE;&#x65F6;&#x9500;&#x6BC1;)</h2><p>  &#x5728;&#x5B9A;&#x4E49;Block&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4ED6;&#x7684;&#x5185;&#x5B58;&#x533A;&#x57DF;&#x662F;&#x5206;&#x914D;&#x5728;&#x6808;&#x4E0A;&#x7684;&#x3002;&#x4E5F;&#x5C31;&#x662F;&#x8BF4;&#xFF0C;Block&#x53EA;&#x80FD;&#x5728;&#x5B9A;&#x4E49;&#x4ED6;&#x7684;&#x8303;&#x56F4;&#x5185;&#x6709;&#x6548;&#x3002;&#x51FA;&#x4E86;&#x6B64;&#x8303;&#x56F4;&#x5C31;&#x5931;&#x6548;&#x4E86;&#x3002;but&#xFF0C;&#x5982;&#x679C;&#x5728;&#x6B64;&#x65F6;&#xFF0C;&#x8986;&#x76D6;&#x4E86;&#x6B64;&#x5185;&#x5B58;&#x5757;&#x5C31;&#x4F1A;&#x51FA;&#x95EE;&#x9898;&#x4E86;&#x3002;<br>  <strong><em> &#x53EF;&#x4EE5;&#x4F7F;&#x7528;copy&#x64CD;&#x4F5C;&#xFF0C;&#x5C06;&#x6808;block &#x62F7;&#x8D1D;&#x5230;&#x5806;&#x4E0A;&#x3002;</em></strong><br>  &#x5BF9;&#x4E8E;&#x6808;Block&#x7684;&#x56DE;&#x6536;&#xFF0C;&#x65E0;&#x9700;&#x62C5;&#x5FC3;&#xFF0C;&#x7CFB;&#x7EDF;&#x4F1A;&#x81EA;&#x52A8;&#x56DE;&#x6536;&#x3002;&#xFF08;&#x5982;&#x679C;&#x6808;Block&#x88AB;&#x56DE;&#x6536;&#x4E86;&#xFF0C;&#x6B64;&#x65F6;&#x4F7F;&#x7528;&#x6808;Block&#x5C31;&#x4F1A;&#x51FA;&#x95EE;&#x9898;&#xFF09;&#x3002;<br>  1&#xFF09;&#x3001;mrc<br>     &#x5F53;&#x51FD;&#x6570;&#x9000;&#x51FA;&#x7684;&#x65F6;&#x5019;&#xFF0C;Block&#x4F1A;&#x88AB;&#x91CA;&#x653E;&#xFF0C;&#x518D;&#x6B21;&#x8C03;&#x7528;&#x4F1A;&#x4EA7;&#x751F;crash&#x3002;<br>  2&#xFF09;&#x3001;arc<br>     &#x5728;arc&#x4E0B;&#xFF0C;&#x751F;&#x6210;&#x7684;Block&#x4E5F;&#x662F;&#x6808;Block&#xFF0C;&#x4F46;&#x662F;&#x518D;&#x5C06;Block&#x8D4B;&#x503C;&#x7ED9;strong&#x7C7B;&#x578B;&#x7684;&#x53D8;&#x91CF;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x4F1A;&#x81EA;&#x52A8;&#x6267;&#x884C;&#x4E00;&#x6B21;copy&#x3002;</p>
+<h2 id="&#x5806;Block-NSConcreteMallocBlock-&#x5806;-&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x4E3A;0&#x65F6;&#x9500;&#x6BC1;"><a href="#&#x5806;Block-NSConcreteMallocBlock-&#x5806;-&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x4E3A;0&#x65F6;&#x9500;&#x6BC1;" class="headerlink" title="&#x5806;Block  _NSConcreteMallocBlock (&#x5806;)(&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x4E3A;0&#x65F6;&#x9500;&#x6BC1;)"></a>&#x5806;Block  _NSConcreteMallocBlock (&#x5806;)(&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x4E3A;0&#x65F6;&#x9500;&#x6BC1;)</h2><p>  &#x8DDF;OC&#x5BF9;&#x8C61;&#x4E00;&#x6837;&#xFF0C;&#x62E5;&#x6709;&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x4E86;&#x3002;&#xFF08;&#x5BF9;&#x4E8E;&#x5806;Block&#x7684;&#x62F7;&#x8D1D;&#x64CD;&#x4F5C;&#x53EA;&#x662F;&#x5BF9;&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x7684;&#x64CD;&#x4F5C;&#x3002;&#xFF09;&#x5728;arc&#x73AF;&#x5883;&#x4E0B;&#xFF0C;&#x5806;Block&#x548C;&#x666E;&#x901A;OC&#x5BF9;&#x8C61;&#x4E00;&#x6837;&#xFF0C;&#x53EF;&#x4EE5;&#x4EA4;&#x7ED9;&#x7CFB;&#x7EDF;&#x5904;&#x7406;&#x5185;&#x5B58;&#x3002;<br>  &#x6B64;&#x65F6;~&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x5C31;&#x51FA;&#x73B0;&#x4E86;&#x3002;<br>  1&#xFF09;&#x3001;mrc<br>     &#x9700;&#x8981;&#x624B;&#x52A8;&#x5C06;&#x6808;Block&#x62F7;&#x8D1D;&#x5230; &#x5806;&#x4E0A;&#x9762;&#x3002;<br>  2&#xFF09;&#x3001;arc<br>     &#x81EA;&#x52A8;&#x6267;&#x884C;copy&#x64CD;&#x4F5C;&#x3002;</p>
+<h1 id="block-&#x53D8;&#x91CF;"><a href="#block-&#x53D8;&#x91CF;" class="headerlink" title="__block &#x53D8;&#x91CF;"></a>__block &#x53D8;&#x91CF;</h1><p>  <strong>block&#x53D8;&#x91CF;&#x7684;&#x8F6C;&#x6362;&#x4EE3;&#x7801;&#x5728;&#x4E0A;&#x6587;&#x4E2D;&#x90FD;&#x6709;&#x770B;&#x5230;&#x3002; </strong>block&#x53D8;&#x91CF;&#x4F1A;&#x8DDF;&#x968F;Block&#x5185;&#x5B58;&#x7ED3;&#x6784;&#x7684;&#x53D8;&#x5316;&#x3002;<br>  &#x5F53;Block&#x4ECE;&#x6808;&#x590D;&#x5236;&#x5230;&#x5806;&#x4E0A;&#x7684;&#x65F6;&#x5019;&#xFF0C;1&#xFF1A;&#x5982;&#x679C;<strong>block&#x53D8;&#x91CF;&#x5728;&#x6808;&#x4E0A;&#xFF0C;&#x90A3;&#x4E48;</strong>block&#x53D8;&#x91CF;&#x5C06;&#x4ECE;&#x6808;&#x590D;&#x5236;&#x5230;&#x5806;&#x3002;2&#xFF1A;&#x5982;&#x679C;<strong>block&#x53D8;&#x91CF;&#x5728;&#x5806;&#x4E0A;&#xFF0C;&#x90A3;&#x4E48;&#x4ED6;&#x5C06;&#x88AB;Block&#x6301;&#x6709;&#x3002;<br>  &#x5728;arc&#x548C;mrc&#x4E0B;&#x7684;&#x533A;&#x522B;&#xFF1A;<br>  1&#x3001;arc&#xFF1A;<br>    1)&#x3001;</strong>block&#x4FEE;&#x9970;&#x4F1A;&#x5F15;&#x8D77;&#x5FAA;&#x73AF;&#x5F15;&#x7528;<br>    2)&#x3001;<strong>block&#x4FEE;&#x9970;&#x7684;&#x53D8;&#x91CF;&#x5728;block&#x4EE3;&#x7801;&#x4E2D;&#x4F1A;&#x88AB;retain<br>  2&#x3001;mrc&#xFF1A;<br>    1)&#x3001;</strong>block&#x4FEE;&#x9970;&#x4E0D;&#x4F1A;&#x5F15;&#x8D77;&#x5FAA;&#x73AF;&#x5F15;&#x7528;<br>    2)&#x3001;__block&#x4FEE;&#x9970;&#x7684;&#x53D8;&#x91CF;&#x5728;block&#x4EE3;&#x7801;&#x4E2D;&#x4E0D;&#x4F1A;&#x88AB;retain</p>
+<h1 id="Block&#x5FAA;&#x73AF;&#x5F15;&#x7528;"><a href="#Block&#x5FAA;&#x73AF;&#x5F15;&#x7528;" class="headerlink" title="Block&#x5FAA;&#x73AF;&#x5F15;&#x7528;"></a>Block&#x5FAA;&#x73AF;&#x5F15;&#x7528;</h1><p>  &#x8FD9;&#x91CC;&#x5C31;&#x4E0D;&#x8BF4;&#x4EA7;&#x751F;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x7684;&#x539F;&#x56E0;&#x6216;&#x8005;&#x662F;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#x4E86;&#xFF0C;&#x7F51;&#x4E0A;&#x4E00;&#x641C;&#x4E00;&#x5927;&#x628A;&#x3002;</p>
+<h1 id="&#x603B;&#x7ED3;"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</h1><p>  Block&#x63D0;&#x4F9B;&#x4E86;&#x4E0E;C&#x51FD;&#x6570;&#x76F8;&#x540C;&#x7684;&#x529F;&#x80FD;&#x3002;&#x4F46;&#x662F;&#x4ED6;&#x4F7F;&#x7528;&#x8D77;&#x6765;&#x66F4;&#x76F4;&#x89C2;&#x3002;&#x800C;&#x4E14;&#xFF0C;Block&#x53EF;&#x4EE5;&#x6355;&#x83B7;&#x5468;&#x56F4;&#x53D8;&#x91CF;&#x7684;&#x503C;&#x3002;<br>  &#x8FD8;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF1A;<br>  1&#x3001;Block&#x5BF9;&#x4E8E;&#x5916;&#x90E8;&#x53D8;&#x91CF;&#x7684;&#x5F15;&#x7528;&#x662F;&#x5C06;&#x53D8;&#x91CF;&#x590D;&#x5236;&#x5230;Block&#x6570;&#x636E;&#x7ED3;&#x6784;&#x4E2D;&#x5B9E;&#x73B0;&#x7684;&#x3002;<br>  2&#x3001;Block&#x5BF9;&#x4E8E;__block&#x4FEE;&#x9970;&#x7684;&#x5916;&#x90E8;&#x53D8;&#x91CF;&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x662F;&#x901A;&#x8FC7;&#x590D;&#x5236;&#x53D8;&#x91CF;&#x7684;&#x5730;&#x5740;&#x6765;&#x5B9E;&#x73B0;&#x7684;&#x3002;</p>
+<p>&#x53C2;&#x8003;1:<a href="http://rypress.com/tutorials/objective-c/blocks" target="_blank" rel="external">tutorials blocks</a><br>&#x53C2;&#x8003;2:&#x3010;Objective-C &#x9AD8;&#x7EA7;&#x7F16;&#x7A0B;&#x3011;</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
+          
+            <a href="/tags/Objective-C/" rel="tag">#Objective-C</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/23/从NSCopying协议到copy，mutableCopy/" rel="next" title="从NSCopying协议到copy，mutableCopy">
+                <i class="fa fa-chevron-left"></i> 从NSCopying协议到copy，mutableCopy
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="iAstrolien" />
+          <p class="site-author-name" itemprop="name">iAstrolien</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Block实现"><span class="nav-number">1.</span> <span class="nav-text">Block实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Block内存结构"><span class="nav-number">1.1.</span> <span class="nav-text">Block内存结构</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Block种类"><span class="nav-number">2.</span> <span class="nav-text">Block种类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局Block-NSConcreteGlobalBlock-程序的数据区域-data-不会访问外部变量"><span class="nav-number">2.1.</span> <span class="nav-text">全局Block  _NSConcreteGlobalBlock (程序的数据区域.data)(不会访问外部变量)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈Block-NSConcreteStackBlock-栈-返回时销毁"><span class="nav-number">2.2.</span> <span class="nav-text">栈Block  _NSConcreteStackBlock (栈)(返回时销毁)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆Block-NSConcreteMallocBlock-堆-引用计数为0时销毁"><span class="nav-number">2.3.</span> <span class="nav-text">堆Block  _NSConcreteMallocBlock (堆)(引用计数为0时销毁)</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#block-变量"><span class="nav-number">3.</span> <span class="nav-text">__block 变量</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Block循环引用"><span class="nav-number">4.</span> <span class="nav-text">Block循环引用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">iAstrolien</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("gB4aVdMalprphVIqcvm5PJXn-gzGzoHsz", "M2kuXyzqPUhAgB9Wxojo4VUS");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+</body>
+</html>
